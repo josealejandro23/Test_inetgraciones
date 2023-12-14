@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestPlatform.Utilities;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Test_jvarg361.Controllers;
 using Test_jvarg361.DBContext;
 using Test_jvarg361.Entitys;
 using Test_jvarg361.Models;
 using Test_jvarg361.Services;
+using Xunit.Abstractions;
 
 namespace XUnitTestJvarg
 {
@@ -16,8 +18,9 @@ namespace XUnitTestJvarg
         private readonly ICategoryService categoryService;
         private readonly ISupplierService supplierService;
         private readonly ProductController ProductController;
+        private readonly ITestOutputHelper _output;
 
-        public ProductTest()
+        public ProductTest(ITestOutputHelper output)
         {
             contextoDB = new ApplicationDbContext();
             ProductService = new ProductService(contextoDB);
@@ -26,6 +29,7 @@ namespace XUnitTestJvarg
             ProductController = new ProductController(ProductService, categoryService, supplierService);
         }
 
+        //validar la creación de productos en masa
         [Fact]
         public async void CreateProductsBulk()
         {
@@ -52,6 +56,7 @@ namespace XUnitTestJvarg
             Assert.True(quantityCreated == quantityToCreate);
         }
 
+        //validar la paginación de productos, debe ejecutarse después de la prueba CreateProductsBulk
         [Fact]
         public async void getProductsPagination()
         {
@@ -70,6 +75,28 @@ namespace XUnitTestJvarg
             //esto solo es válido si el pagesize es menor a la cantidad de productos creados
             //por lo que se recomienda ejecutar primero la prueva previa
             Assert.True(JRes.Count == pageSize);
+            var JItem = (JObject)JRes.First();
+            int productId = (int)JItem.GetValue("Id");
+            Assert.True(productId > 0);
+        }
+
+        //validar la obtención de un único producto, se debe ejecutar después de getProductsPagination
+        [Fact]
+        public async void ValidateOneProduct()
+        {
+            //se debe obtener un id de la base de datos
+            int productId = 611530;
+            var result = await ProductController.GetProductById(productId);
+            //validamos que sea un resultado exitoso
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            var obj = (OkObjectResult)result;
+            Assert.NotNull(obj);
+            //convertimos la respuesta a un JSONObject
+            var JRes = JObject.FromObject(obj.Value);
+            //el id recibido debe ser igual al enviado
+            int idReturned = (int)JRes.GetValue("Id");
+            Assert.True(idReturned == productId);
         }
     }
 }
