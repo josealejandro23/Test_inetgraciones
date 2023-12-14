@@ -36,6 +36,12 @@ A continuación los pasos para ejecutar el proyecto correctamente desde Visual S
 10. Lanzar el proyecto y ejecutar las apis. Es necesario enviar la cabecera Authorization con valor "Intcomex" para permitir las peticiones.
 11. Se recomienda inicialmente crear algunas categorías de productos.
 
+Ejecución de pruebas
+1. Se deben crear algunas categorías mediante el api
+2. Ejecutar las pruebas unitarias de category test
+3. Ejecutar las pruebas unitarias de Product test, en este caso para la ejecución de la última de las pruebas es necesario obtener de la db o mediante el api de paginación
+un id de producto para validar que el api de obtención de producto por id funcione correctamente.
+
 Los pasos anteriores deberían ser suficientes para la correcta ejecución del proyecto, para más facilidad es posible obtener 
 el workspace de Postman de este proyecto desde el siguiente enlace 
 [Link](https://www.postman.com/gold-flare-152783/workspace/test-intcomex/overview?ctx=settings "Test Intcomex Postman collection").
