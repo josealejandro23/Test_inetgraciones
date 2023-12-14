@@ -33,7 +33,7 @@ A continuación los pasos para ejecutar el proyecto correctamente desde Visual S
 - Create_Type_ProductBulk.sql
 - Create_SP_BulkProducts.sql
 9. Validar en la DB la existencia de los SP y tipos creados en el paso anterior.
-10. Lanzar el proyecto y ejecutar las apis.
+10. Lanzar el proyecto y ejecutar las apis. Es necesario enviar la cabecera Authorization con valor "Intcomex" para permitir las peticiones.
 11. Se recomienda inicialmente crear algunas categorías de productos.
 
 Los pasos anteriores deberían ser suficientes para la correcta ejecución del proyecto, para más facilidad es posible obtener 
